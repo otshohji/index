@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>訪問看護お役立ち資料集</title>
+
+<!-- PWA / Home screen -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="訪看資料集" />
+<meta name="application-name" content="訪看資料集" />
+<meta name="theme-color" content="#d42e7a" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='38' fill='%23d42e7a'/%3E%3Crect x='44' y='52' width='104' height='13' rx='6' fill='white'/%3E%3Crect x='44' y='77' width='80' height='10' rx='5' fill='rgba(255,255,255,.7)'/%3E%3Crect x='44' y='99' width='90' height='10' rx='5' fill='rgba(255,255,255,.7)'/%3E%3Crect x='44' y='121' width='68' height='10' rx='5' fill='rgba(255,255,255,.5)'/%3E%3Ccircle cx='148' cy='140' r='28' fill='white' fill-opacity='.18'/%3E%3Cpath d='M136 140h24M148 128v24' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --mag:       #d42e7a;
+  --mag-dark:  #a01858;
+  --mag-light: #f06292;
+  --mag-pale:  #fce4ec;
+  --mag-soft:  #fdf0f5;
+  --white:     #ffffff;
+  --text-dark: #2d1020;
+  --text-mid:  #7a4260;
+  --text-soft: #b07090;
+  --radius:    16px;
+  --radius-sm: 10px;
+  --shadow:    0 4px 20px rgba(212,46,122,.13);
+  --shadow-lg: 0 10px 40px rgba(212,46,122,.2);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #fff0f5;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  width: 100%;
+  max-width: 430px;
+  background: var(--white);
+  min-height: 100dvh;
+  position: relative;
+  box-shadow: 0 0 60px rgba(212,46,122,.10);
+}
+
+/* ═══ Screens ═══ */
+.screen { display: none; }
+.screen.active {
+  display: block;
+  animation: fadeUp .3s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════
+   DISCLAIMER SCREEN
+═══════════════════════════════════════════ */
+#screen-disclaimer {
+  min-height: 100dvh;
+  background: linear-gradient(160deg, var(--mag-dark) 0%, var(--mag) 55%, var(--mag-light) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px 28px;
+  gap: 22px;
+}
+#screen-disclaimer.active { display: flex; }
+
+.disc-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+.disc-icon {
+  width: 64px; height: 64px;
+  background: rgba(255,255,255,.18);
+  border: 2px solid rgba(255,255,255,.3);
+  border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+}
+.disc-app-name {
+  font-size: 18px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.35;
+  text-align: center;
+}
+.disc-station {
+  font-size: 11px;
+  color: rgba(255,255,255,.75);
+  font-weight: 500;
+}
+
+.disc-card {
+  width: 100%;
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.disc-card-head {
+  background: var(--mag-soft);
+  border-bottom: 1.5px solid var(--mag-pale);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.disc-card-title {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text-dark);
+}
+.disc-card-body {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.disc-station-block {
+  background: var(--mag-soft);
+  border-left: 3px solid var(--mag);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--text-dark);
+  line-height: 1.8;
+}
+.disc-station-block strong { color: var(--mag-dark); font-weight: 900; }
+.disc-hr { height: 1px; background: var(--mag-pale); }
+.disc-text {
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.85;
+}
+.disc-text strong { color: var(--text-dark); font-weight: 700; }
+.disc-mission {
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.9;
+  font-style: italic;
+}
+.disc-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: linear-gradient(135deg, var(--mag-dark), var(--mag));
+  color: #fff;
+  border: none;
+  padding: 17px 18px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  border-top: 1.5px solid var(--mag-pale);
+  transition: opacity .15s;
+  letter-spacing: .02em;
+}
+.disc-cta:active { opacity: .85; }
+.disc-footer {
+  font-size: 10px;
+  color: rgba(255,255,255,.45);
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════════
+   MAIN SCREEN
+═══════════════════════════════════════════ */
+/* top accent bar */
+.top-bar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--mag-dark), var(--mag-light));
+}
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(135deg, var(--mag-dark) 0%, var(--mag) 50%, var(--mag-light) 100%);
+  padding: 48px 22px 36px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 160px; height: 160px;
+  background: rgba(255,255,255,.08);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: -20px;
+  width: 110px; height: 110px;
+  background: rgba(255,255,255,.07);
+  border-radius: 50%;
+}
+.hero-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  color: rgba(255,255,255,.72);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.hero-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 5px;
+}
+.hero-byline {
+  font-size: 11px;
+  color: rgba(255,255,255,.72);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,.17);
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 999px;
+  padding: 5px 12px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+}
+/* notice button */
+.notice-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 999px;
+  color: rgba(255,255,255,.82);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 5px 11px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: background .15s;
+}
+.notice-pill:hover { background: rgba(255,255,255,.22); }
+
+/* ── Section wrapper ── */
+.section-wrap {
+  padding: 0 16px;
+  margin-top: 24px;
+}
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.section-label-bar {
+  width: 4px; height: 22px;
+  background: linear-gradient(180deg, var(--mag-dark), var(--mag-light));
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.section-label-text {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text-dark);
+  line-height: 1.3;
+}
+.section-label-sub {
+  font-size: 10px;
+  color: var(--text-soft);
+  margin-top: 2px;
+}
+
+/* ── Event Cards ── */
+.event-card {
+  background: var(--white);
+  border: 1.5px solid var(--mag-pale);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 14px;
+}
+.event-card-header {
+  background: linear-gradient(135deg, var(--mag-dark), var(--mag));
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.event-card-icon {
+  width: 34px; height: 34px;
+  background: rgba(255,255,255,.18);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.event-card-header-text { color: #fff; }
+.event-card-category {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.72);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.event-card-title {
+  font-size: 13px;
+  font-weight: 900;
+}
+.event-card-body {
+  padding: 14px 16px;
+}
+.event-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.event-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-mid);
+  background: var(--mag-soft);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+.event-desc {
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+.event-apply-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: linear-gradient(135deg, var(--mag-dark), var(--mag));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(212,46,122,.3);
+  transition: transform .12s, opacity .15s;
+}
+.event-apply-btn:active { transform: scale(.97); opacity: .9; }
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--mag-pale), transparent);
+  margin: 8px 16px 0;
+}
+
+/* ── Resource Cards ── */
+.resource-card {
+  background: var(--white);
+  border: 1.5px solid var(--mag-pale);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 14px;
+}
+.resource-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px 12px;
+}
+.resource-icon {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.resource-icon.pink   { background: var(--mag-pale); }
+.resource-icon.blue   { background: #e3f2fd; }
+.resource-icon.green  { background: #e8f5e9; }
+.resource-icon.orange { background: #fff3e0; }
+
+.resource-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 999px;
+  margin-bottom: 5px;
+}
+.resource-tag.pdf     { background: #fce4ec; color: #c2185b; }
+.resource-tag.checklist { background: #e8f5e9; color: #2e7d32; }
+.resource-tag.summary { background: #e3f2fd; color: #1565c0; }
+.resource-tag.manual  { background: #fff3e0; color: #e65100; }
+
+.resource-name {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--text-dark);
+  line-height: 1.4;
+  margin-bottom: 3px;
+}
+.resource-desc {
+  font-size: 10px;
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+.resource-footer {
+  display: flex;
+  border-top: 1px solid var(--mag-pale);
+}
+.resource-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--mag);
+  text-decoration: none;
+  transition: background .15s;
+}
+.resource-btn:active { background: var(--mag-soft); }
+.resource-btn + .resource-btn {
+  border-left: 1px solid var(--mag-pale);
+}
+
+/* ── Footer ── */
+.app-footer {
+  margin: 24px 16px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--mag-dark), var(--mag));
+  border-radius: var(--radius);
+  text-align: center;
+  color: #fff;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.app-footer::before {
+  content: '';
+  position: absolute;
+  top: -20px; right: -20px;
+  width: 80px; height: 80px;
+  background: rgba(255,255,255,.08);
+  border-radius: 50%;
+}
+.footer-icon {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,.18);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 10px;
+}
+.footer-msg {
+  font-size: 13px;
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+.footer-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,.72);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.footer-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,.18);
+  border: 1.5px solid rgba(255,255,255,.3);
+  border-radius: 999px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background .15s;
+  margin-bottom: 14px;
+}
+.footer-copyright {
+  font-size: 9px;
+  color: rgba(255,255,255,.45);
+  padding-bottom: 4px;
+}
+
+/* ── Spacer ── */
+.pb { height: 32px; }
+
+  /* ── Bottom Tab Bar ── */
+  .tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: var(--white);
+    border-top: 1.5px solid var(--mag-pale);
+    display: flex;
+    z-index: 100;
+    box-shadow: 0 -4px 20px rgba(212,46,122,.08);
+  }
+  .tab-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 10px 0 13px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-soft);
+    transition: color .18s;
+    position: relative;
+  }
+  .tab-btn svg { width: 22px; height: 22px; }
+  .tab-btn.active { color: var(--mag); }
+  .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 3px;
+    background: var(--mag);
+    border-radius: 3px 3px 0 0;
+  }
+  /* extra bottom padding so content isn't hidden behind tab bar */
+  .pb { height: 72px; }
+  #screen-disclaimer { padding-bottom: 72px; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══ DISCLAIMER ═══ -->
+  <div class="screen" id="screen-disclaimer">
+    <div class="disc-logo-wrap">
+      <div class="disc-icon">
+        <svg width="32" height="32" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </div>
+      <div class="disc-app-name">訪問看護<br>お役立ち資料集</div>
+      <div class="disc-station">ケアーズ訪問看護リハビリステーション仙台東</div>
+    </div>
+
+    <div class="disc-card">
+      <div class="disc-card-head">
+        <svg width="17" height="17" fill="none" stroke="var(--mag)" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span class="disc-card-title">ご利用上の注意</span>
+      </div>
+      <div class="disc-card-body">
+        <div class="disc-station-block">
+          本アプリは<strong>ケアーズ訪問看護リハビリステーション仙台東</strong>が、地域の医療・介護・福祉に携わる皆さまへ提供するWEBアプリケーションです。
+        </div>
+        <div class="disc-hr"></div>
+        <p class="disc-text">掲載する研修・資料の情報はあくまでも<strong>参考</strong>です。実際の研修参加・資料請求については、各案内をご確認のうえ手続きをお願いします。</p>
+        <p class="disc-text">本アプリの情報を参照したことにより生じたいかなる損害についても、当ステーションは責任を負いかねます。</p>
+        <div class="disc-hr"></div>
+        <p class="disc-mission">私たちは、仙台東地域における医療・介護・福祉に携わるすべての方々のお仕事を支え、この地域に暮らすひとりひとりの生活の質を高めることを使命として、日々の訪問看護・リハビリに取り組んでまいります。</p>
+      </div>
+      <button class="disc-cta" onclick="goMain()">
+        内容を確認しました　→　資料集を使う
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <div class="disc-footer">© ケアーズ訪問看護リハビリステーション仙台東</div>
+  </div>
+
+  <!-- ═══ MAIN ═══ -->
+  <div class="screen" id="screen-main">
+    <div class="top-bar"></div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <button class="notice-pill" onclick="goDisclaimer()">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        ご利用上の注意
+      </button>
+      <div class="hero-eyebrow">ケアーズ訪問看護リハビリステーション仙台東</div>
+      <h1 class="hero-title">訪問看護<br>お役立ち資料集</h1>
+      <p class="hero-byline">研修・イベント申し込み、資料請求はこちらから</p>
+      <div class="hero-badges">
+        <span class="hero-badge">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          メールで簡単申し込み
+        </span>
+        <span class="hero-badge">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          資料PDF請求対応
+        </span>
+      </div>
+    </div>
+
+    <!-- ═══ EVENTS ═══ -->
+    <div class="section-wrap">
+      <div class="section-label">
+        <div class="section-label-bar"></div>
+        <div>
+          <div class="section-label-text">研修・イベント申し込み</div>
+          <div class="section-label-sub">ボタンをタップするとメールが自動作成されます</div>
+        </div>
+      </div>
+
+      <!-- Event 1 -->
+      <div class="event-card">
+        <div class="event-card-header">
+          <div class="event-card-icon">
+            <svg width="18" height="18" fill="none" stroke="white" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="event-card-header-text">
+            <div class="event-card-category">研修会</div>
+            <div class="event-card-title">在宅での看取りケア研修会</div>
+          </div>
+        </div>
+        <div class="event-card-body">
+          <div class="event-meta-row">
+            <span class="event-meta">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+              日程未定（開催決定次第ご案内）
+            </span>
+            <span class="event-meta">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              オンライン／会場
+            </span>
+            <span class="event-meta">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              約90分
+            </span>
+          </div>
+          <p class="event-desc">在宅での看取りに関わるすべての方に向けた研修会です。訪問看護師・ケアマネジャー・相談員・ヘルパーなど多職種の方のご参加をお待ちしています。</p>
+          <a class="event-apply-btn" href="mailto:info@example.com?subject=%E3%80%90%E7%94%B3%E3%81%97%E8%BE%BC%E3%81%BF%E3%80%91%E5%9C%A8%E5%AE%85%E3%81%A7%E3%81%AE%E7%9C%8B%E5%8F%96%E3%82%8A%E3%82%B1%E3%82%A2%E7%A0%94%E4%BF%AE%E4%BC%9A&body=%E3%82%B1%E3%82%A2%E3%83%BC%E3%82%BA%E8%A8%AA%E5%95%8F%E7%9C%8B%E8%AD%B7%E3%83%AA%E3%83%8F%E3%83%93%E3%83%AA%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E4%BB%99%E5%8F%B0%E6%9D%B1%20%E3%81%94%E6%8B%85%E5%BD%93%20%E6%A7%98%0A%0A%E3%80%90%E5%9C%A8%E5%AE%85%E3%81%A7%E3%81%AE%E7%9C%8B%E5%8F%96%E3%82%8A%E3%82%B1%E3%82%A2%E7%A0%94%E4%BF%AE%E4%BC%9A%E3%80%91%E3%81%B8%E3%81%AE%E5%8F%82%E5%8A%A0%E3%82%92%E5%B8%8C%E6%9C%9B%E3%81%97%E3%81%BE%E3%81%99%E3%80%82%0A%0A%E2%96%A0%20%E3%81%8A%E5%90%8D%E5%89%8D%EF%BC%9A%0A%E2%96%A0%20%E6%89%80%E5%B1%9E%E5%85%88%EF%BC%9A%0A%E2%96%A0%20%E8%81%B7%E7%A8%AE%EF%BC%9A%0A%E2%96%A0%20%E9%80%A3%E7%B5%A1%E5%85%88%EF%BC%9A%0A%0A%E3%81%A9%E3%81%86%E3%81%9E%E3%82%88%E3%82%8D%E3%81%97%E3%81%8F%E3%81%8A%E9%A1%98%E3%81%84%E3%81%97%E3%81%BE%E3%81%99%E3%80%82">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            メールで申し込む
+          </a>
+        </div>
+      </div>
+
+      <!-- Event 2 -->
+      <div class="event-card">
+        <div class="event-card-header">
+          <div class="event-card-icon">
+            <svg width="18" height="18" fill="none" stroke="white" stroke-width="2.2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="event-card-header-text">
+            <div class="event-card-category">多職種連携</div>
+            <div class="event-card-title">多職種連携ケアカンファレンス</div>
+          </div>
+        </div>
+        <div class="event-card-body">
+          <div class="event-meta-row">
+            <span class="event-meta">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+              随時開催
+            </span>
+            <span class="event-meta">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              当ステーション会議室
+            </span>
+          </div>
+          <p class="event-desc">ケアマネジャー・相談員・訪問看護師・リハビリ職が集まり、地域の利用者さんをテーマに事例検討を行います。参加・見学大歓迎です。</p>
+          <a class="event-apply-btn" href="mailto:info@example.com?subject=%E3%80%90%E5%8F%82%E5%8A%A0%E5%B8%8C%E6%9C%9B%E3%80%91%E5%A4%9A%E8%81%B7%E7%A8%AE%E9%80%A3%E6%90%BA%E3%82%B1%E3%82%A2%E3%82%AB%E3%83%B3%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9&body=%E3%82%B1%E3%82%A2%E3%83%BC%E3%82%BA%E8%A8%AA%E5%95%8F%E7%9C%8B%E8%AD%B7%E3%83%AA%E3%83%8F%E3%83%93%E3%83%AA%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E4%BB%99%E5%8F%B0%E6%9D%B1%20%E3%81%94%E6%8B%85%E5%BD%93%20%E6%A7%98%0A%0A%E3%80%90%E5%A4%9A%E8%81%B7%E7%A8%AE%E9%80%A3%E6%90%BA%E3%82%B1%E3%82%A2%E3%82%AB%E3%83%B3%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9%E3%80%91%E3%81%B8%E3%81%AE%E5%8F%82%E5%8A%A0%E3%82%92%E5%B8%8C%E6%9C%9B%E3%81%97%E3%81%BE%E3%81%99%E3%80%82%0A%0A%E2%96%A0%20%E3%81%8A%E5%90%8D%E5%89%8D%EF%BC%9A%0A%E2%96%A0%20%E6%89%80%E5%B1%9E%E5%85%88%EF%BC%9A%0A%E2%96%A0%20%E8%81%B7%E7%A8%AE%EF%BC%9A%0A%E2%96%A0%20%E5%B8%8C%E6%9C%9B%E6%97%A5%E6%99%82%EF%BC%9A%0A%0A%E3%81%A9%E3%81%86%E3%81%9E%E3%82%88%E3%82%8D%E3%81%97%E3%81%8F%E3%81%8A%E9%A1%98%E3%81%84%E3%81%97%E3%81%BE%E3%81%99%E3%80%82">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            メールで参加申し込みする
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ═══ RESOURCES ═══ -->
+    <div class="section-wrap" style="margin-top:22px;">
+      <div class="section-label">
+        <div class="section-label-bar"></div>
+        <div>
+          <div class="section-label-text">研修資料＆お役立ち資料</div>
+          <div class="section-label-sub">資料請求はメールで受け付けています</div>
+        </div>
+      </div>
+
+      <!-- Resource 1 -->
+      <div class="resource-card">
+        <div class="resource-card-top">
+          <div class="resource-icon pink">
+            <svg width="24" height="24" fill="none" stroke="var(--mag)" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div>
+            <span class="resource-tag pdf">📄 PDF資料</span>
+            <div class="resource-name">過去の研修会スライド集</div>
+            <div class="resource-desc">看取りケア・多職種連携・褥瘡管理など過去研修のスライドをまとめたPDFです。</div>
+          </div>
+        </div>
+        <div class="resource-footer">
+          <a class="resource-btn" href="mailto:info@example.com?subject=%E3%80%90%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82%E3%80%91%E9%81%8E%E5%8E%BB%E3%81%AE%E7%A0%94%E4%BF%AE%E4%BC%9A%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%89%E9%9B%86&body=%E3%82%B1%E3%82%A2%E3%83%BC%E3%82%BA%E8%A8%AA%E5%95%8F%E7%9C%8B%E8%AD%B7%E3%83%AA%E3%83%8F%E3%83%93%E3%83%AA%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E4%BB%99%E5%8F%B0%E6%9D%B1%20%E3%81%94%E6%8B%85%E5%BD%93%20%E6%A7%98%0A%0A%E3%80%90%E9%81%8E%E5%8E%BB%E3%81%AE%E7%A0%94%E4%BF%AE%E4%BC%9A%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%89%E9%9B%86%E3%80%91%E3%81%AE%E8%B3%87%E6%96%99%E3%82%92%E3%81%8A%E9%80%81%E3%82%8A%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82%0A%0A%E2%96%A0%20%E3%81%8A%E5%90%8D%E5%89%8D%EF%BC%9A%0A%E2%96%A0%20%E6%89%80%E5%B1%9E%E5%85%88%EF%BC%9A%0A%E2%96%A0%20%E8%81%B7%E7%A8%AE%EF%BC%9A">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            メールで資料を請求する
+          </a>
+        </div>
+      </div>
+
+      <!-- Resource 2 -->
+      <div class="resource-card">
+        <div class="resource-card-top">
+          <div class="resource-icon green">
+            <svg width="24" height="24" fill="none" stroke="#2e7d32" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div>
+            <span class="resource-tag checklist">✅ チェックリスト</span>
+            <div class="resource-name">服薬管理チェックリスト</div>
+            <div class="resource-desc">在宅利用者の服薬状況を確認するためのチェックリスト。多職種での情報共有にご活用ください。</div>
+          </div>
+        </div>
+        <div class="resource-footer">
+          <a class="resource-btn" href="mailto:info@example.com?subject=%E3%80%90%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82%E3%80%91%E6%9C%8D%E8%96%AC%E7%AE%A1%E7%90%86%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%88&body=%E3%82%B1%E3%82%A2%E3%83%BC%E3%82%BA%E8%A8%AA%E5%95%8F%E7%9C%8B%E8%AD%B7%E3%83%AA%E3%83%8F%E3%83%93%E3%83%AA%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E4%BB%99%E5%8F%B0%E6%9D%B1%20%E3%81%94%E6%8B%85%E5%BD%93%20%E6%A7%98%0A%0A%E3%80%90%E6%9C%8D%E8%96%AC%E7%AE%A1%E7%90%86%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%88%E3%80%91%E3%82%92%E3%81%8A%E9%80%81%E3%82%8A%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82%0A%0A%E2%96%A0%20%E3%81%8A%E5%90%8D%E5%89%8D%EF%BC%9A%0A%E2%96%A0%20%E6%89%80%E5%B1%9E%E5%85%88%EF%BC%9A%0A%E2%96%A0%20%E8%81%B7%E7%A8%AE%EF%BC%9A">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            メールで資料を請求する
+          </a>
+        </div>
+      </div>
+
+      <!-- Resource 3 -->
+      <div class="resource-card">
+        <div class="resource-card-top">
+          <div class="resource-icon blue">
+            <svg width="24" height="24" fill="none" stroke="#1565c0" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div>
+            <span class="resource-tag summary">📘 まとめ資料</span>
+            <div class="resource-name">医療・介護保険の境界線まとめ</div>
+            <div class="resource-desc">訪問看護の医療保険・介護保険の適用区分をわかりやすく整理した資料。ケアマネジャー・相談員の方にも。</div>
+          </div>
+        </div>
+        <div class="resource-footer">
+          <a class="resource-btn" href="mailto:info@example.com?subject=%E3%80%90%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82%E3%80%91%E5%8C%BB%E7%99%82%E3%83%BB%E4%BB%8B%E8%AD%B7%E4%BF%9D%E9%99%BA%E5%A2%83%E7%95%8C%E7%B7%9A%E3%81%BE%E3%81%A8%E3%82%81&body=%E3%82%B1%E3%82%A2%E3%83%BC%E3%82%BA%E8%A8%AA%E5%95%8F%E7%9C%8B%E8%AD%B7%E3%83%AA%E3%83%8F%E3%83%93%E3%83%AA%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E4%BB%99%E5%8F%B0%E6%9D%B1%20%E3%81%94%E6%8B%85%E5%BD%93%20%E6%A7%98%0A%0A%E3%80%90%E5%8C%BB%E7%99%82%E3%83%BB%E4%BB%8B%E8%AD%B7%E4%BF%9D%E9%99%BA%E3%81%AE%E5%A2%83%E7%95%8C%E7%B7%9A%E3%81%BE%E3%81%A8%E3%82%81%E3%80%91%E3%82%92%E3%81%8A%E9%80%81%E3%82%8A%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82%0A%0A%E2%96%A0%20%E3%81%8A%E5%90%8D%E5%89%8D%EF%BC%9A%0A%E2%96%A0%20%E6%89%80%E5%B1%9E%E5%85%88%EF%BC%9A%0A%E2%96%A0%20%E8%81%B7%E7%A8%AE%EF%BC%9A">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            メールで資料を請求する
+          </a>
+        </div>
+      </div>
+
+      <!-- Resource 4 -->
+      <div class="resource-card">
+        <div class="resource-card-top">
+          <div class="resource-icon orange">
+            <svg width="24" height="24" fill="none" stroke="#e65100" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div>
+            <span class="resource-tag manual">📙 マニュアル</span>
+            <div class="resource-name">在宅褥瘡ケアマニュアル</div>
+            <div class="resource-desc">褥瘡の予防から処置まで、在宅で実践できる手順をまとめたマニュアルです。ご家族・介護職の方にも。</div>
+          </div>
+        </div>
+        <div class="resource-footer">
+          <a class="resource-btn" href="mailto:info@example.com?subject=%E3%80%90%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82%E3%80%91%E5%9C%A8%E5%AE%85%E8%A4%A5%E7%98%A1%E3%82%B1%E3%82%A2%E3%83%9E%E3%83%8B%E3%83%A5%E3%82%A2%E3%83%AB&body=%E3%82%B1%E3%82%A2%E3%83%BC%E3%82%BA%E8%A8%AA%E5%95%8F%E7%9C%8B%E8%AD%B7%E3%83%AA%E3%83%8F%E3%83%93%E3%83%AA%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E4%BB%99%E5%8F%B0%E6%9D%B1%20%E3%81%94%E6%8B%85%E5%BD%93%20%E6%A7%98%0A%0A%E3%80%90%E5%9C%A8%E5%AE%85%E8%A4%A5%E7%98%A1%E3%82%B1%E3%82%A2%E3%83%9E%E3%83%8B%E3%83%A5%E3%82%A2%E3%83%AB%E3%80%91%E3%82%92%E3%81%8A%E9%80%81%E3%82%8A%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82%0A%0A%E2%96%A0%20%E3%81%8A%E5%90%8D%E5%89%8D%EF%BC%9A%0A%E2%96%A0%20%E6%89%80%E5%B1%9E%E5%85%88%EF%BC%9A%0A%E2%96%A0%20%E8%81%B7%E7%A8%AE%EF%BC%9A">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            メールで資料を請求する
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="section-wrap" style="margin-top:20px;">
+      <div class="app-footer">
+        <div class="footer-icon">
+          <svg width="18" height="18" fill="none" stroke="white" stroke-width="2.2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </div>
+        <div class="footer-msg">ホーム画面に追加して、日々の業務にご活用ください</div>
+        <div class="footer-sub">ブラウザの「共有」→「ホーム画面に追加」でアプリのように使えます</div>
+        <div class="footer-add-btn">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          ホーム画面に追加する
+        </div>
+        <div class="footer-copyright">© ケアーズ訪問看護リハビリステーション仙台東</div>
+      </div>
+    </div>
+    <div class="pb"></div>
+  </div><!-- /screen-main -->
+
+
+  <!-- ── Tab Bar ── -->
+  <nav class="tab-bar" id="tab-bar">
+    <button class="tab-btn" id="tab-disclaimer" onclick="showTab('disclaimer')">
+      <svg fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      ご利用上の注意
+    </button>
+    <button class="tab-btn active" id="tab-main" onclick="showTab('main')">
+      <svg fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      資料集
+    </button>
+  </nav>
+</div><!-- /app -->
+
+<script>
+function showTab(id) {
+  // screens
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  // tabs
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+// aliases used by existing buttons in the HTML
+function goMain()       { showTab('main'); }
+function goDisclaimer() { showTab('disclaimer'); }
+
+// start on disclaimer
+showTab('disclaimer');
+</script>
+</body>
+</html>
